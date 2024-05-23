@@ -25,7 +25,7 @@ The E-Commerce API is a robust backend service designed for managing products, c
 
    <pre>
    git clone https://github.com/Rehab-Adel/E-Commerce-API.git
-   cd E_Commerce_API</pre>
+   cd E-Commerce-API</pre>
    
 **2. Set up the database:**
 
