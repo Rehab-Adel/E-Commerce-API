@@ -81,16 +81,16 @@ Sample Data for User Registration:
 
 • `POST /api/account/login` - Login a user
 
-•`POST /api/account/create-role` - Create a new role
+• `POST /api/account/create-role` - Create a new role
 
 
 
 
 **Product Management**
 
-•`GET /api/products` - Get all products
+• `GET /api/products` - Get all products
 
-•`GET /api/products/{id}` - Get a product by ID
+• `GET /api/products/{id}` - Get a product by ID
 
 • `POST /api/products` - Create a new product
 
@@ -113,18 +113,17 @@ Sample Data for User Registration:
 
 
 
-
 **Order Management**
 
-•`GET /api/orders/{userId}` - Get orders by user ID
+• `GET /api/orders/{userId}` - Get orders by user ID
 
-•`GET /api/orders/{userId}/{id}` - Get an order by ID
+• `GET /api/orders/{userId}/{id}` - Get an order by ID
 
-•`POST /api/orders` - Create a new order
+• `POST /api/orders` - Create a new order
 
 • `PUT /api/orders/{id}` - Update an order
 
-•`DELETE /api/orders/{id}` - Delete an order
+• `DELETE /api/orders/{id}` - Delete an order
 
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request for any changes.
