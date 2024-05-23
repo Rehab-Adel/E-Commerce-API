@@ -17,7 +17,7 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<CartDto>> GetCart(string userId)
+        public async Task<ActionResult<CartDto>> GetCartAsync(string userId)
         {
             var cart = await _cartService.GetCartByUserIdAsync(userId);
             if (cart == null)
@@ -29,18 +29,28 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CartDto>> CreateCart(CreateCartDto createCartDto)
+        public async Task<ActionResult<CartDto>> CreateCartAsync(CreateCartDto createCartDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var cart = await _cartService.CreateCartAsync(createCartDto);
-            return CreatedAtAction(nameof(GetCart), new { userId = cart.UserId }, cart);
+            return CreatedAtAction(nameof(GetCartAsync), new { userId = cart.UserId }, cart);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCart(int id, UpdateCartDto updateCartDto)
+        public async Task<IActionResult> UpdateCartAsync(int id, UpdateCartDto updateCartDto)
         {
             if (id != updateCartDto.Id)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             await _cartService.UpdateCartAsync(updateCartDto);
@@ -48,7 +58,7 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
+        public async Task<IActionResult> DeleteCartAsync(int id)
         {
             var result = await _cartService.DeleteCartAsync(id);
             if (!result)

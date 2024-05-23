@@ -36,7 +36,7 @@ namespace E_Commerce_API.Services
 
             if (result.Succeeded)
             {
-                return "token"; // Implement your token generation logic here
+                return "token";
             }
 
             return null;

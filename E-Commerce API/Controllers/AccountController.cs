@@ -3,6 +3,7 @@ using E_Commerce_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace E_Commerce_API.Controllers
 {
@@ -21,8 +22,13 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterDto registerDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = new User
             {
                 UserName = registerDto.UserName,
@@ -41,8 +47,13 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await _signInManager.PasswordSignInAsync(loginDto.UserName, loginDto.Password, false, false);
             if (result.Succeeded)
             {
@@ -53,8 +64,13 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost("create-role")]
-        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto createRoleDto)
+        public async Task<IActionResult> CreateRoleAsync([FromBody] CreateRoleDto createRoleDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var role = new Role { Name = createRoleDto.RoleName };
             var result = await _roleManager.CreateAsync(role);
             if (result.Succeeded)

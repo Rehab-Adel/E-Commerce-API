@@ -18,14 +18,14 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsAsync()
         {
             var products = await _productService.GetAllProductsAsync();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProductAsync(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
@@ -37,18 +37,28 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductDto createProductDto)
+        public async Task<ActionResult<ProductDto>> CreateProductAsync(CreateProductDto createProductDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var product = await _productService.CreateProductAsync(createProductDto);
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProductAsync), new { id = product.Id }, product);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, UpdateProductDto updateProductDto)
+        public async Task<IActionResult> UpdateProductAsync(int id, UpdateProductDto updateProductDto)
         {
             if (id != updateProductDto.Id)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             await _productService.UpdateProductAsync(updateProductDto);
@@ -56,7 +66,7 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProductAsync(int id)
         {
             var result = await _productService.DeleteProductAsync(id);
             if (!result)

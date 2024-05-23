@@ -17,8 +17,13 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto registerDto)
+        public async Task<IActionResult> RegisterAsync(RegisterDto registerDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await _authService.RegisterUserAsync(registerDto);
             if (!result)
             {
@@ -29,8 +34,13 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> LoginAsync(LoginDto loginDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var token = await _authService.LoginUserAsync(loginDto);
             if (string.IsNullOrEmpty(token))
             {

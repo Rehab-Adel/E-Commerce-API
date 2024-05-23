@@ -18,14 +18,14 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders(string userId)
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersAsync(string userId)
         {
             var orders = await _orderService.GetOrdersByUserIdAsync(userId);
             return Ok(orders);
         }
 
         [HttpGet("{userId}/{id}")]
-        public async Task<ActionResult<OrderDto>> GetOrder(string userId, int id)
+        public async Task<ActionResult<OrderDto>> GetOrderAsync(string userId, int id)
         {
             var order = await _orderService.GetOrderByIdAsync(id);
             if (order == null)
@@ -37,18 +37,28 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderDto>> CreateOrder(CreateOrderDto createOrderDto)
+        public async Task<ActionResult<OrderDto>> CreateOrderAsync(CreateOrderDto createOrderDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var order = await _orderService.CreateOrderAsync(createOrderDto);
-            return CreatedAtAction(nameof(GetOrder), new { userId = order.UserId, id = order.Id }, order);
+            return CreatedAtAction(nameof(GetOrderAsync), new { userId = order.UserId, id = order.Id }, order);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(int id, UpdateOrderDto updateOrderDto)
+        public async Task<IActionResult> UpdateOrderAsync(int id, UpdateOrderDto updateOrderDto)
         {
             if (id != updateOrderDto.Id)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             await _orderService.UpdateOrderAsync(updateOrderDto);
@@ -56,7 +66,7 @@ namespace E_Commerce_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
             var result = await _orderService.DeleteOrderAsync(id);
             if (!result)
